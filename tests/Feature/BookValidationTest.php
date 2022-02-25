@@ -43,4 +43,9 @@ class BookValidationTest extends TestCase
         $response = $this->post("/books", $this->data());
         $response->assertSessionHasErrors(["author_id" => "Author must be valid"]);
     }
+
+    public function testIsbnMustBeOfValidFormat(){
+        $response = $this->post("/books", $this->data(["ISBN" => "test"]));
+        $response->assertSessionHasErrors(["ISBN" => "ISBN must be of valid format"]);
+    }
 }

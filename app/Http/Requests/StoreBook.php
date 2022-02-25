@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\Isbn;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreBook extends FormRequest
@@ -17,6 +18,7 @@ class StoreBook extends FormRequest
            'title' => 'required',
             'description' => 'required|min:20',
             'author_id' => 'exists:authors,id',
+            'ISBN' => [new Isbn()]
         ];
     }
 
@@ -26,7 +28,7 @@ class StoreBook extends FormRequest
             'title.required' => 'title is required',
             'description.required' => 'description is required',
             'description.min' => 'description length minimum is 20',
-            'author_id.exists' => 'Author must be valid'
+            'author_id.exists' => 'Author must be valid',
         ];
     }
 }
