@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class BooksController extends Controller
 {
     public function store(StoreBook $request){
-        Book::create($request->validated());
+        Book::create($request->all());
         return response(['message' => 'created'],201);
     }
 }
