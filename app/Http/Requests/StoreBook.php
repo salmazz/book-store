@@ -25,7 +25,7 @@ class StoreBook extends FormRequest
         return [
             'title.required' => 'title is required',
             'description.required' => 'description is required',
-            'description.min' => 'description length minimum is 20 character',
+            'description.min' => 'description length minimum is 20',
             'author_id.exists' => 'Author must be valid'
         ];
     }

@@ -19,7 +19,7 @@ class BookCrudTest extends TestCase
     public function testStatus201WithMessageCreatedWhenCreateABook()
     {
         $this->response->assertCreated();
-        $this->response->assertJson(["message" => "Created"]);
+        $this->response->assertJson(["message" => "created"]);
     }
 
     public function testCountOfDatabaseInBooksTableIs1()
