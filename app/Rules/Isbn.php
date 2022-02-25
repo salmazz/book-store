@@ -35,6 +35,6 @@ class Isbn implements Rule
      */
     public function message()
     {
-        return 'ISBN must be of valid format.';
+        return 'ISBN must be of valid format';
     }
 }
