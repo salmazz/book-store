@@ -67,5 +67,19 @@ class BookCrudTest extends TestCase
         $response->assertCookie('validated', 'yes');
     }
 
+    public function testLibrarianCanSeeBookCreationForm(){
+        $user = $this->user;
+        $user->role = "Librarian";
+        $res = $this->actingAs($user)->get('/books/create');
+        $res->assertOk();
+        $res->assertViewIs('book_creation');
+    }
+
+    public function testNonLibrarianCannotSeeBookCreationForm(){
+        $user = $this->user;
+        $user->role = "Non-Librarian";
+        $res = $this->actingAs($user)->get('/books/create');
+        $res->assertForbidden();
+    }
 
 }

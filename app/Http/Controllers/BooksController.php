@@ -12,4 +12,8 @@ class BooksController extends Controller
         Book::create($request->all());
         return response(['message' => 'created'],201);
     }
+
+    public function create(){
+        return view('book_creation');
+    }
 }
