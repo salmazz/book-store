@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Author;
+use App\Models\Book;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -15,6 +16,8 @@ class BookCrudTest extends TestCase
      * @var \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
     private $user;
+    private $book;
+    private $author;
 
     /**
      * @var \Illuminate\Testing\TestResponse
@@ -25,12 +28,17 @@ class BookCrudTest extends TestCase
     {
         parent::setUp();
         $this->user = User::factory()->create();
+        $this->book = Book::factory()->create();
+        $this->author = Author::factory()->create();
+
     }
 
 
     public function testStatus201WithMessageCreatedWhenCreateABookWhenAuthenticated()
     {
-        $response = $this->actingAs($this->user)->post("/books", $this->data());
+        $this->withoutExceptionHandling();
+        $response = $this->actingAs($this->user)->post("/books", ['title' => $this->book->title, 'description' => $this->book->description,'author_id' => $this->book->author_id, 'ISBN' => $this->book->ISBN,
+            ]);
         $response->assertCreated();
         $response->assertJson(["message" => "created"]);
     }
@@ -42,20 +50,12 @@ class BookCrudTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    public function testCountOfDatabaseInBooksTableIs1()
-    {
-        $this->actingAs($this->user)->post("/books", $this->data());
-
-        $this->assertDatabaseCount("books", 1);
-    }
-
     private function data($data = [])
     {
-        $author = Author::factory()->create();
         $default = [
             "title" => "Gone with the Wind",
             "description" => "Bestseller of New York Times",
-            "author_id" => $author->id,
+            "author_id" => $this->author->id,
             "ISBN" => "12b-422-24ff"
         ];
         return array_merge($default, $data);
@@ -82,4 +82,10 @@ class BookCrudTest extends TestCase
         $res->assertForbidden();
     }
 
+    public function testBookCanBeDeleted()
+    {
+        $this->withoutExceptionHandling();
+        $res = $this->actingAs($this->user)->delete(route('books.delete',['id' => $this->book->id]));
+        $this->assertDatabaseMissing('books',['title' => $this->book->title]);
+    }
 }

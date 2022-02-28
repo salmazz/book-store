@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreBook;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class BooksController extends Controller
 {
@@ -23,5 +23,10 @@ class BooksController extends Controller
     public function create()
     {
         return view('book_creation');
+    }
+
+    public function delete($id){
+        Book::destroy($id);
+        return \response('',Response::HTTP_NO_CONTENT);
     }
 }

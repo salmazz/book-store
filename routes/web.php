@@ -25,4 +25,5 @@ require __DIR__.'/auth.php';
 
 Route::post('/books',[\App\Http\Controllers\BooksController::class, 'store'])->middleware(['auth','validated']);
 Route::get('/books/create', [\App\Http\Controllers\BooksController::class,'create'])->middleware('can:create,App\Models\Book');
+Route::delete('/books/{id}', [\App\Http\Controllers\BooksController::class,'delete'])->name('books.delete');
 Route::get('/books', [\App\Http\Controllers\BooksController::class,'index']);
